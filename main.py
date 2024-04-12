@@ -49,8 +49,6 @@ def main(args):
     
     ### WRITE YOUR CODE HERE to do any other data processing
 
-    
-
     ## 3. Initialize the method you want to use.
 
     # Use NN (FOR MS2!)

@@ -19,6 +19,7 @@ class LogisticRegression(object):
         """
         self.lr = lr
         self.max_iters = max_iters
+        self.weights = None
 
 
 
@@ -45,7 +46,8 @@ class LogisticRegression(object):
         for it in range(self.max_iters):
             weights = weights - self.lr * gradient(weights)
 
-        pred_labels = np.argmax(softmax(weights), axis = 1)
+        self.weights = weights
+        pred_labels = onehot_to_label(softmax(training_data, self.weights))
         ###
         ##
         return pred_labels
@@ -61,7 +63,7 @@ class LogisticRegression(object):
         """
         ##
         ###
-        #### WRITE YOUR CODE HERE!
+        predict_labels = onehot_to_label(softmax(test_data, self.weights))
         ###
         ##
-        return pred_labels
+        return predict_labels

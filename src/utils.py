@@ -112,3 +112,15 @@ def mse_fn(pred,gt):
     loss = (pred-gt)**2
     loss = np.mean(loss)
     return loss
+
+
+def softmax(data, weights):
+
+    exp = np.exp(data @ weights)
+    return exp / np.sum(exp, axis=0)
+
+def gradient_logistic_regression(data, weights, one_hot_labels):
+    return data.T @ (softmax(data, weights) - one_hot_labels)
+
+def euclidean_dist(example, data):
+    return np.sqrt(np.sum((da - example) ** 2, axis=1))
