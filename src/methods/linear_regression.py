@@ -27,9 +27,13 @@ class LinearRegression(object):
         """
         ##
         ###
-        self.weights = \
-            (np.linalg.inv(training_data.T @ training_data + self.lmda * np.eye(training_data.shape[1]))
-            @ training_data.T @ training_labels)
+        if self.lmda == 0 :
+            self.weights = \
+                (np.linalg.pinv(training_data) @ training_labels)
+        else:
+            self.weights = \
+                (np.linalg.inv(training_data.T @ training_data + self.lmda * np.eye(training_data.shape[1]))
+                @ training_data.T @ training_labels)
 
         pred_regression_targets = training_data @ self.weights
 

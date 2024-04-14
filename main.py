@@ -36,7 +36,14 @@ def main(args):
 
     ##TODO: ctrain and ctest are for regression task. (To be used for Linear Regression and KNN)
     ##TODO: xtrain, xtest, ytrain, ytest are for classification task. (To be used for Logistic Regression and KNN)
+    xtrain_mean = np.mean(xtrain, 0, keepdims=True)
+    xtrain_std = np.std(xtrain, 0, keepdims=True)
 
+    xtrain = normalize_fn(xtrain, xtrain_mean, xtrain_std)
+    xtrain = append_bias_term(xtrain)
+
+    xtest = normalize_fn(xtest, xtrain_mean, xtrain_std)
+    xtest = append_bias_term(xtest)
 
 
     ## 2. Then we must prepare it. This is were you can create a validation set,
@@ -58,6 +65,15 @@ def main(args):
     # Follow the "DummyClassifier" example for your methods
     if args.method == "dummy_classifier":
         method_obj = DummyClassifier(arg1=1, arg2=2)
+
+    elif args.method == "linear_regression":
+        method_obj = LinearRegression(args.lmda)
+
+    elif args.method == "logistic_regression":
+        method_obj = LogisticRegression(args.lr, args.max_iters)
+
+    elif args.method == "knn":
+        method_obj = KNN(args.K, "classification" if args.task == "breed_identifying" else "regression")
 
     elif ...:  ### WRITE YOUR CODE HERE
         pass
