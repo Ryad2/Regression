@@ -1,5 +1,18 @@
 import numpy as np
 
+from ..utils import euclidean_dist
+
+
+def kNN_one_example(example, data, labels, k, task_kind):
+    distances = euclidean_dist(example, data)
+    nn_indices = np.argsort(distances)[:k]
+    neighbor_labels = labels[nn_indices]
+    if task_kind == "classification":
+        best_label = np.argmax(np.bincount(neighbor_labels))
+    elif task_kind == "regression":
+        best_label = np.mean(neighbor_labels, axis=1)
+    return best_label
+
 class KNN(object):
     """
         kNN classifier object.
@@ -10,7 +23,10 @@ class KNN(object):
             Call set_arguments function of this class.
         """
         self.k = k
-        self.task_kind =task_kind
+        self.task_kind = task_kind
+        self.data = None
+        self.labels = None
+
 
     def fit(self, training_data, training_labels):
         """
@@ -29,7 +45,16 @@ class KNN(object):
 
         ##
         ###
-        #### YOUR CODE HERE!
+        self.data = training_data
+        self.labels = training_labels
+
+        pred_labels = np.apply_along_axis(kNN_one_example,
+                                          1,
+                                          training_data,
+                                          self.data,
+                                          self.labels,
+                                          self.k,
+                                          self.task_kind)
         ###
         ##
         return pred_labels
@@ -45,7 +70,13 @@ class KNN(object):
         """
         ##
         ###
-        #### YOUR CODE HERE!
+        test_labels = np.apply_along_axis(kNN_one_example,
+                                          1,
+                                          test_data,
+                                          self.data,
+                                          self.labels,
+                                          self.k,
+                                          self.task_kind)
         ###
         ##
         return test_labels

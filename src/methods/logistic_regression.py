@@ -1,14 +1,16 @@
 import numpy as np
 
-from ..utils import get_n_classes, label_to_onehot, onehot_to_label
+from ..utils import get_n_classes, label_to_onehot, onehot_to_label, softmax
 
+def gradient_logistic_regression(data, weights, one_hot_labels):
+    return data.T @ (softmax(data, weights) - one_hot_labels)
 
 class LogisticRegression(object):
     """
     Logistic regression classifier.
     """
 
-    def __init__(self, lr, max_iters = 500):
+    def __init__(self, lr, max_iters=500):
         """
         Initialize the new object (see dummy_methods.py)
         and set its arguments.
@@ -35,16 +37,12 @@ class LogisticRegression(object):
         """
         ##
         ###
-        def softmax(weights):
-            exp = np.exp(training_data @ weights)
-            return exp / np.sum(exp, axis=0)
+        one_hot_labels = label_to_onehot(training_labels)
 
-        def gradient(weights):
-            return training_data.T @ (softmax(weights) - training_labels)
+        weights = np.random.normal(0, 0.1, (training_data.shape[1], one_hot_labels.shape[1]))
 
-        weights = np.random.normal(0, 0.1, (training_data.shape[1], training_labels.shape[1]))
         for it in range(self.max_iters):
-            weights = weights - self.lr * gradient(weights)
+            weights = weights - self.lr * gradient_logistic_regression(training_data, weights, one_hot_labels)
 
         self.weights = weights
         pred_labels = onehot_to_label(softmax(training_data, self.weights))
