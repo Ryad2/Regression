@@ -3,6 +3,16 @@ import numpy as np
 from ..utils import get_n_classes, label_to_onehot, onehot_to_label, softmax
 
 def gradient_logistic_regression(data, weights, one_hot_labels):
+    '''
+    Computes the gradient for logistic regression gradient descent.
+
+    Arguments:
+        data (array): training data, of shape (N,D)
+        weights (array): model weights, of shape (D,nb of classes)
+        one_hot_labels (array): training labels in one hot encoding, of shape (N,nb of classes)
+    Returns:
+        (array): gradient, of shape (D,nb of classes)
+    '''
     return data.T @ (softmax(data, weights) - one_hot_labels)
 
 class LogisticRegression(object):

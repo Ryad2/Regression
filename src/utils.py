@@ -115,11 +115,28 @@ def mse_fn(pred,gt):
 
 
 def softmax(data, weights):
+    '''
+        Computes softmax function.
 
+        Arguments:
+            data (array): training data, of shape (N,D)
+            weights (array): model weights, of shape (D,nb of classes)
+        Returns:
+            (array): output of softmax function, of shape (N,nb of classes)
+    '''
     exp = np.exp(data @ weights)
     return exp / np.sum(exp, axis=0)
 
 
 
-def euclidean_dist(example, data):
-    return np.sqrt(np.sum((data - example) ** 2, axis=1))
+def euclidean_dist(sample, data):
+    '''
+        Computes eulidean distance.
+
+        Arguments:
+            sample (array): sample vector, of shape (D,)
+            data (array): training data, of shape (N,D)
+        Returns:
+            (array): all distances from sample, of shape (N,)
+    '''
+    return np.sqrt(np.sum((data - sample) ** 2, axis=1))

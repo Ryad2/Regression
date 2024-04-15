@@ -3,8 +3,20 @@ import numpy as np
 from ..utils import euclidean_dist
 
 
-def kNN_one_example(example, data, labels, k, task_kind):
-    distances = euclidean_dist(example, data)
+def kNN_one_sample(sample, data, labels, k, task_kind):
+    '''
+        Outputs kNN prediction for one sample.
+
+        Arguments:
+            sample (array): sample vector, of shape (D,)
+            data (array): training data, of shape (N,D)
+            labels (array): training labels, of shape (N,)
+            k (int): number of nearest neighbors
+            task_kind (string): either classification or regression
+        Returns:
+            (int): the predicted label for the sample vector
+    '''
+    distances = euclidean_dist(sample, data)
     nn_indices = np.argsort(distances)[:k]
     neighbor_labels = labels[nn_indices]
     if task_kind == "classification":
@@ -48,7 +60,7 @@ class KNN(object):
         self.data = training_data
         self.labels = training_labels
 
-        pred_labels = np.apply_along_axis(kNN_one_example,
+        pred_labels = np.apply_along_axis(kNN_one_sample,
                                           1,
                                           training_data,
                                           self.data,
@@ -70,7 +82,7 @@ class KNN(object):
         """
         ##
         ###
-        test_labels = np.apply_along_axis(kNN_one_example,
+        test_labels = np.apply_along_axis(kNN_one_sample,
                                           1,
                                           test_data,
                                           self.data,
