@@ -1,6 +1,21 @@
 import numpy as np
 
-from ..utils import get_n_classes, label_to_onehot, onehot_to_label, softmax
+from ..utils import label_to_onehot, onehot_to_label
+
+
+def softmax(data, weights):
+    '''
+        Computes softmax function.
+
+        Arguments:
+            data (array): training data, of shape (N,D)
+            weights (array): model weights, of shape (D,nb of classes)
+        Returns:
+            (array): output of softmax function, of shape (N,nb of classes)
+    '''
+    exp = np.exp(data @ weights)
+    return exp / (np.sum(exp, axis=1).reshape(-1, 1))
+
 
 def gradient_logistic_regression(data, weights, one_hot_labels):
     '''
@@ -14,6 +29,7 @@ def gradient_logistic_regression(data, weights, one_hot_labels):
         (array): gradient, of shape (D,nb of classes)
     '''
     return data.T @ (softmax(data, weights) - one_hot_labels)
+
 
 class LogisticRegression(object):
     """
@@ -32,8 +48,6 @@ class LogisticRegression(object):
         self.lr = lr
         self.max_iters = max_iters
         self.weights = None
-
-
 
     def fit(self, training_data, training_labels):
         """

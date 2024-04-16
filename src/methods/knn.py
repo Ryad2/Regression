@@ -1,6 +1,17 @@
 import numpy as np
 
-from ..utils import euclidean_dist
+
+def euclidean_dist(sample, data):
+    '''
+        Computes eulidean distance.
+
+        Arguments:
+            sample (array): sample vector, of shape (D,)
+            data (array): training data, of shape (N,D)
+        Returns:
+            (array): all distances from sample, of shape (N,)
+    '''
+    return np.sqrt(np.sum((data - sample) ** 2, axis=1))
 
 
 def kNN_one_sample(sample, data, labels, k, task_kind):
@@ -25,12 +36,13 @@ def kNN_one_sample(sample, data, labels, k, task_kind):
         best_label = np.mean(neighbor_labels, axis=1)
     return best_label
 
+
 class KNN(object):
     """
         kNN classifier object.
     """
 
-    def __init__(self, k=1, task_kind = "classification"):
+    def __init__(self, k=1, task_kind="classification"):
         """
             Call set_arguments function of this class.
         """
@@ -38,7 +50,6 @@ class KNN(object):
         self.task_kind = task_kind
         self.data = None
         self.labels = None
-
 
     def fit(self, training_data, training_labels):
         """

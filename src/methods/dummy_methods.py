@@ -7,7 +7,7 @@ class DummyClassifier(object):
     """
     This method is a dummy method! It returns a random label for classification.
     """
-    
+
     def __init__(self, arg1, arg2=0):
         """
         Initialization function. This get called when you create a new object of the class.
@@ -24,7 +24,7 @@ class DummyClassifier(object):
         self.arg1 = arg1
         self.arg2 = arg2
         # We can then access them in any function of this class by using `self.arg1`, for example.
-    
+
     def random_predict(self, C, N):
         """
         Generate random classification predictions.

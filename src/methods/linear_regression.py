@@ -1,5 +1,5 @@
 import numpy as np
-import sys
+
 
 class LinearRegression(object):
     """
@@ -27,18 +27,17 @@ class LinearRegression(object):
         """
         ##
         ###
-        if self.lmda == 0 :
+        if self.lmda == 0:
             self.weights = \
                 (np.linalg.pinv(training_data) @ training_labels)
         else:
             self.weights = \
                 (np.linalg.inv(training_data.T @ training_data + self.lmda * np.eye(training_data.shape[1]))
-                @ training_data.T @ training_labels)
+                 @ training_data.T @ training_labels)
 
         pred_regression_targets = training_data @ self.weights
 
         return pred_regression_targets
-
 
     def predict(self, test_data):
         """

@@ -1,4 +1,4 @@
-import numpy as np 
+import numpy as np
 
 
 # Generaly utilies
@@ -22,6 +22,7 @@ def label_to_onehot(labels, C=None):
     one_hot_labels[np.arange(N), labels.astype(int)] = 1
     return one_hot_labels
 
+
 def onehot_to_label(onehot):
     """
     Transform the labels from one-hot to class index.
@@ -33,6 +34,7 @@ def onehot_to_label(onehot):
     """
     return np.argmax(onehot, axis=1)
 
+
 def append_bias_term(data):
     """
     Append to the data a bias term equal to 1.
@@ -43,8 +45,9 @@ def append_bias_term(data):
         (array): shape (N,D+1)
     """
     N = data.shape[0]
-    data = np.concatenate([np.ones([N, 1]),data], axis=1)
+    data = np.concatenate([np.ones([N, 1]), data], axis=1)
     return data
+
 
 def normalize_fn(data, means, stds):
     """
@@ -59,6 +62,7 @@ def normalize_fn(data, means, stds):
     """
     # return the normalized features
     return (data - means) / stds
+
 
 def get_n_classes(labels):
     """
@@ -78,28 +82,30 @@ def accuracy_fn(pred_labels, gt_labels):
     """
     return np.mean(pred_labels == gt_labels) * 100.
 
+
 def macrof1_fn(pred_labels, gt_labels):
     """Return the macro F1-score."""
     class_ids = np.unique(gt_labels)
     macrof1 = 0
     for val in class_ids:
         predpos = (pred_labels == val)
-        gtpos = (gt_labels==val)
-        
-        tp = sum(predpos*gtpos)
-        fp = sum(predpos*~gtpos)
-        fn = sum(~predpos*gtpos)
+        gtpos = (gt_labels == val)
+
+        tp = sum(predpos * gtpos)
+        fp = sum(predpos * ~gtpos)
+        fn = sum(~predpos * gtpos)
         if tp == 0:
             continue
         else:
-            precision = tp/(tp+fp)
-            recall = tp/(tp+fn)
+            precision = tp / (tp + fp)
+            recall = tp / (tp + fn)
 
-        macrof1 += 2*(precision*recall)/(precision+recall)
+        macrof1 += 2 * (precision * recall) / (precision + recall)
 
-    return macrof1/len(class_ids)
+    return macrof1 / len(class_ids)
 
-def mse_fn(pred,gt):
+
+def mse_fn(pred, gt):
     '''
         Mean Squared Error
         Arguments:
@@ -109,34 +115,6 @@ def mse_fn(pred,gt):
             returns the computed loss
 
     '''
-    loss = (pred-gt)**2
+    loss = (pred - gt) ** 2
     loss = np.mean(loss)
     return loss
-
-
-def softmax(data, weights):
-    '''
-        Computes softmax function.
-
-        Arguments:
-            data (array): training data, of shape (N,D)
-            weights (array): model weights, of shape (D,nb of classes)
-        Returns:
-            (array): output of softmax function, of shape (N,nb of classes)
-    '''
-    exp = np.exp(data @ weights)
-    return exp / (np.sum(exp, axis=1).reshape(-1, 1))
-
-
-
-def euclidean_dist(sample, data):
-    '''
-        Computes eulidean distance.
-
-        Arguments:
-            sample (array): sample vector, of shape (D,)
-            data (array): training data, of shape (N,D)
-        Returns:
-            (array): all distances from sample, of shape (N,)
-    '''
-    return np.sqrt(np.sum((data - sample) ** 2, axis=1))
