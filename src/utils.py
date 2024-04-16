@@ -125,7 +125,7 @@ def softmax(data, weights):
             (array): output of softmax function, of shape (N,nb of classes)
     '''
     exp = np.exp(data @ weights)
-    return exp / np.sum(exp, axis=0)
+    return exp / (np.sum(exp, axis=1).reshape(-1, 1))
 
 
 
