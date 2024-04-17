@@ -15,6 +15,7 @@ class LinearRegression(object):
         """
         self.weights = None
         self.lmda = lmda
+        self.task_kind = 'regression'
 
     def fit(self, training_data, training_labels):
         """
@@ -25,8 +26,7 @@ class LinearRegression(object):
             Returns:
                 pred_labels (np.array): target of shape (N,regression_target_size)
         """
-        ##
-        ###
+        #Use the pseudo-inverse if no regularizer as the matrix might not be invertible
         if self.lmda == 0:
             self.weights = \
                 (np.linalg.pinv(training_data) @ training_labels)
@@ -48,10 +48,5 @@ class LinearRegression(object):
             Returns:
                 test_labels (np.array): labels of shape (N,regression_target_size)
         """
-        ##
-        ###
         pred_regression_targets = test_data @ self.weights
-        ###
-        ##
-
         return pred_regression_targets

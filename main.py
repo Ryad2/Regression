@@ -34,20 +34,23 @@ def main(args):
         data_dir = os.path.join(args.data_path,'dog-small-64')
         xtrain, xtest, ytrain, ytest, ctrain, ctest = load_data(data_dir)
 
-    ##TODO: ctrain and ctest are for regression task. (To be used for Linear Regression and KNN)
-    ##TODO: xtrain, xtest, ytrain, ytest are for classification task. (To be used for Logistic Regression and KNN)
-    xtrain_mean = np.mean(xtrain, 0, keepdims=True)
-    xtrain_std = np.std(xtrain, 0, keepdims=True)
-
-    xtrain = normalize_fn(xtrain, xtrain_mean, xtrain_std)
-    xtrain = append_bias_term(xtrain)
-
-    xtest = normalize_fn(xtest, xtrain_mean, xtrain_std)
-    xtest = append_bias_term(xtest)
-
+    ## ctrain and ctest are for regression task. (To be used for Linear Regression and KNN)
+    ## xtrain, xtest, ytrain, ytest are for classification task. (To be used for Logistic Regression and KNN)
 
     ## 2. Then we must prepare it. This is were you can create a validation set,
     #  normalize, add bias, etc.
+
+    # We calculate the mean and the variance of the training set for the Classification task
+    xtrain_mean = np.mean(xtrain, 0, keepdims=True)
+    xtrain_std = np.std(xtrain, 0, keepdims=True)
+
+    # We normalize the training set and add a bias
+    xtrain = normalize_fn(xtrain, xtrain_mean, xtrain_std)
+    xtrain = append_bias_term(xtrain)
+
+    # We normalize the test set with the training mean and variance and add a bias
+    xtest = normalize_fn(xtest, xtrain_mean, xtrain_std)
+    xtest = append_bias_term(xtest)
 
     # Make a validation set (it can overwrite xtest, ytest)
     if not args.test:
@@ -66,16 +69,19 @@ def main(args):
     if args.method == "dummy_classifier":
         method_obj = DummyClassifier(arg1=1, arg2=2)
 
+    # Use Linear Regression
     elif args.method == "linear_regression":
         method_obj = LinearRegression(args.lmda)
 
+    # Use Logistic Regression
     elif args.method == "logistic_regression":
         method_obj = LogisticRegression(args.lr, args.max_iters)
 
+    # Use KNN
     elif args.method == "knn":
         method_obj = KNN(args.K, "classification" if args.task == "breed_identifying" else "regression")
 
-    elif ...:  ### WRITE YOUR CODE HERE
+    elif ...:  
         pass
 
 

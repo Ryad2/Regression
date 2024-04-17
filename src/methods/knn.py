@@ -1,4 +1,5 @@
 import numpy as np
+from ..utils import label_to_onehot, onehot_to_label
 
 
 def euclidean_dist(sample, data):
@@ -65,9 +66,6 @@ class KNN(object):
             Returns:
                 pred_labels (np.array): labels of shape (N,)
         """
-
-        ##
-        ###
         self.data = training_data
         self.labels = training_labels
 
@@ -78,8 +76,6 @@ class KNN(object):
                                           self.labels,
                                           self.k,
                                           self.task_kind)
-        ###
-        ##
         return pred_labels
 
     def predict(self, test_data):
@@ -91,8 +87,6 @@ class KNN(object):
             Returns:
                 test_labels (np.array): labels of shape (N,)
         """
-        ##
-        ###
         test_labels = np.apply_along_axis(kNN_one_sample,
                                           1,
                                           test_data,
@@ -100,6 +94,4 @@ class KNN(object):
                                           self.labels,
                                           self.k,
                                           self.task_kind)
-        ###
-        ##
         return test_labels

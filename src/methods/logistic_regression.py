@@ -48,6 +48,7 @@ class LogisticRegression(object):
         self.lr = lr
         self.max_iters = max_iters
         self.weights = None
+        self.task_kind = 'classification'
 
     def fit(self, training_data, training_labels):
         """
@@ -59,8 +60,6 @@ class LogisticRegression(object):
         Returns:
             pred_labels (array): target of shape (N,)
         """
-        ##
-        ###
         one_hot_labels = label_to_onehot(training_labels)
 
         weights = np.random.normal(0, 0.1, (training_data.shape[1], one_hot_labels.shape[1]))
@@ -70,8 +69,7 @@ class LogisticRegression(object):
 
         self.weights = weights
         pred_labels = onehot_to_label(softmax(training_data, self.weights))
-        ###
-        ##
+
         return pred_labels
 
     def predict(self, test_data):
@@ -83,9 +81,6 @@ class LogisticRegression(object):
         Returns:
             pred_labels (array): labels of shape (N,)
         """
-        ##
-        ###
         predict_labels = onehot_to_label(softmax(test_data, self.weights))
-        ###
-        ##
+
         return predict_labels
