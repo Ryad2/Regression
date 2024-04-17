@@ -12,7 +12,7 @@ def euclidean_dist(sample, data):
         Returns:
             (array): all distances from sample, of shape (N,)
     '''
-    return np.sqrt(np.sum((data - sample) ** 2, axis=1))
+    return np.sqrt(np.sum((data - sample) ** 2, axis=0))
 
 
 def kNN_one_sample(sample, data, labels, k, task_kind):
@@ -34,7 +34,7 @@ def kNN_one_sample(sample, data, labels, k, task_kind):
     if task_kind == "classification":
         best_label = np.argmax(np.bincount(neighbor_labels))
     elif task_kind == "regression":
-        best_label = np.mean(neighbor_labels, axis=1)
+        best_label = np.mean(neighbor_labels, axis=0)
     return best_label
 
 
