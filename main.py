@@ -75,7 +75,7 @@ def main(args):
 
     # Use Logistic Regression
     elif args.method == "logistic_regression":
-        method_obj = LogisticRegression(args.lr, args.max_iters)
+        method_obj = LogisticRegression(args.lr, args.max_iters, args.optimizer)
 
     # Use KNN
     elif args.method == "knn":
@@ -139,6 +139,7 @@ if __name__ == '__main__':
 
 
     # Feel free to add more arguments here if you need!
+    parser.add_argument('--optimizer', default="SGD", type=str, help="SGD / ADAM")
 
     # MS2 arguments
     parser.add_argument('--nn_type', default="cnn", help="which network to use, can be 'Transformer' or 'cnn'")
