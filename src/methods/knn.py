@@ -12,7 +12,7 @@ def euclidean_dist(sample, data):
         Returns:
             (array): all distances from sample, of shape (N,)
     '''
-    return np.sqrt(np.sum((data - sample) ** 2, axis=0))
+    return np.sqrt(np.sum((data - sample) ** 2, axis=1))
 
 
 def kNN_one_sample(sample, data, labels, k, task_kind):
