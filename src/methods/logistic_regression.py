@@ -36,7 +36,7 @@ class LogisticRegression(object):
     Logistic regression classifier.
     """
 
-    def __init__(self, lr, max_iters=500, optimizer = 'SGD',task_kind = 'classification'):
+    def __init__(self, lr, max_iters = 500, optimizer = 'GD', task_kind = 'classification'):
         """
         Initialize the new object (see dummy_methods.py)
         and set its arguments.
@@ -45,9 +45,9 @@ class LogisticRegression(object):
             lr (float): learning rate of the gradient descent
             max_iters (int): maximum number of iterations
         """
+        self.weights = None
         self.lr = lr
         self.max_iters = max_iters
-        self.weights = None
         self.optimizer = optimizer
         self.task_kind = task_kind
 
@@ -61,7 +61,8 @@ class LogisticRegression(object):
         Returns:
             pred_labels (array): target of shape (N,)
         """
-        def sgd(one_hot_labels, weights):
+        def gd(one_hot_labels, weights):
+            '''standard gradient descent optimizer'''
             for it in range(self.max_iters):
                 weights -= self.lr * gradient_logistic_regression(training_data, weights, one_hot_labels)
             
@@ -69,7 +70,8 @@ class LogisticRegression(object):
             return onehot_to_label(softmax(training_data, self.weights))
         
         def adam(one_hot_labels, weights):
-            # Initialize Adam parameters
+            '''ADAM optimizer'''
+            # Initialize ADAM parameters
             m = np.zeros_like(weights)
             v = np.zeros_like(weights)
             beta1 = 0.9
@@ -85,8 +87,9 @@ class LogisticRegression(object):
                 # bias-corrected first and second moment estimates
                 m_hat = m / (1 - beta1 ** (it + 1))
                 v_hat = v / (1 - beta2 ** (it + 1))
-                # Update weights using Adam update rule
+                # Update weights using ADAM update rule
                 new_weights = weights - self.lr * m_hat / (np.sqrt(v_hat) + epsilon)
+                # Exit the loop if converged
                 if np.allclose(new_weights, weights):
                     break
                 else:
@@ -96,14 +99,16 @@ class LogisticRegression(object):
             return onehot_to_label(softmax(training_data, self.weights))
 
         one_hot_labels = label_to_onehot(training_labels)
-        # Xavier/Glorot weights initialization
-        std = np.sqrt(2.0 / (training_data.shape[1] + one_hot_labels.shape[1]))
-        weights = np.random.normal(0, std, (training_data.shape[1], one_hot_labels.shape[1]))
+        # Xavier initialization of the model weights
+        n_in = training_data.shape[1]
+        n_out = one_hot_labels.shape[1]
+        std = np.sqrt(2.0 / (n_in + n_out))
+        weights = np.random.normal(0, std, (n_in, n_out))
 
         if self.optimizer == 'ADAM':
             pred_labels = adam(one_hot_labels, weights)
         else:
-            pred_labels = sgd(one_hot_labels, weights)
+            pred_labels = gd(one_hot_labels, weights)
         
         return pred_labels
 

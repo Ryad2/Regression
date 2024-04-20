@@ -31,10 +31,12 @@ def kNN_one_sample(sample, data, labels, k, task_kind):
     distances = euclidean_dist(sample, data)
     nn_indices = np.argsort(distances)[:k]
     neighbor_labels = labels[nn_indices]
+
     if task_kind == "classification":
         best_label = np.argmax(np.bincount(neighbor_labels))
     elif task_kind == "regression":
         best_label = np.mean(neighbor_labels, axis=0)
+    
     return best_label
 
 
@@ -43,14 +45,14 @@ class KNN(object):
         kNN classifier object.
     """
 
-    def __init__(self, k=1, task_kind="classification"):
+    def __init__(self, k = 1, task_kind="classification"):
         """
             Call set_arguments function of this class.
         """
-        self.k = k
-        self.task_kind = task_kind
         self.data = None
         self.labels = None
+        self.k = k
+        self.task_kind = task_kind
 
     def fit(self, training_data, training_labels):
         """

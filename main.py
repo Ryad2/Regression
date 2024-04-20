@@ -139,7 +139,7 @@ if __name__ == '__main__':
 
 
     # Feel free to add more arguments here if you need!
-    parser.add_argument('--optimizer', default="SGD", type=str, help="SGD / ADAM")
+    parser.add_argument('--optimizer', default="GD", type=str, help="GD / ADAM")
 
     # MS2 arguments
     parser.add_argument('--nn_type', default="cnn", help="which network to use, can be 'Transformer' or 'cnn'")
