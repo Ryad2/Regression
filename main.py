@@ -55,7 +55,17 @@ def main(args):
     # Make a validation set (it can overwrite xtest, ytest)
     if not args.test:
         ### WRITE YOUR CODE HERE
-        pass
+        n_samples = xtrain.shape[0]
+        validation_ratio = 0.2 # adjust as you want
+        rinds = np.random.permutation(n_samples)
+        n_validation = int(n_samples * validation_ratio)
+
+        xtest = xtrain[rinds[:n_validation]]
+        ytest = ytrain[rinds[:n_validation]]
+        ctest = ctrain[rinds[:n_validation]]
+        xtrain = xtrain[rinds[n_validation:]]
+        ytrain = ytrain[rinds[n_validation:]]
+        ctrain = ctrain[rinds[n_validation:]]
     
     ### WRITE YOUR CODE HERE to do any other data processing
 
